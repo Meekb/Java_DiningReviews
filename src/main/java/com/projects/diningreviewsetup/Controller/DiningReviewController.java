@@ -1,10 +1,15 @@
 package com.projects.diningreviewsetup.Controller;
 import com.projects.diningreviewsetup.Repositories.DiningReviewRepository;
 import com.projects.diningreviewsetup.model.DiningReview;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
+@RequestMapping("/reviews")
 public class DiningReviewController {
     private final DiningReviewRepository diningReviewRepository;
 
@@ -12,8 +17,18 @@ public class DiningReviewController {
         this.diningReviewRepository = diningReviewRepository;
     }
 
-    @GetMapping("/reviews")
+    @GetMapping()
     public Iterable<DiningReview> getAllDiningReviews() {
         return this.diningReviewRepository.findAll();
     }
+
+    @GetMapping("/id/{id}")
+    public Optional<DiningReview> getReviewById(@PathVariable("id") Long id) {
+        Optional<DiningReview> result = this.diningReviewRepository.findById(id);
+        if (result.isEmpty()) {
+            System.out.println("That id does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } else return result;
+    }
+
 }

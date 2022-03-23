@@ -9,7 +9,7 @@ class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String display_name;
+    private String username;
     private String city;
     private String state;
     private Integer zip_code;

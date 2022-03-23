@@ -1,8 +1,8 @@
 package com.projects.diningreviewsetup.Repositories;
-//import com.projects.diningreviewsetup.model.DiningReview;
 import com.projects.diningreviewsetup.model.DiningReview;
-import com.projects.diningreviewsetup.model.Restaurant;
 import org.springframework.data.repository.CrudRepository;
+import java.util.List;
 
 public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
+
 }
