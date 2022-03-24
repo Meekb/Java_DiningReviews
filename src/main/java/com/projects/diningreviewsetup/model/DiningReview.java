@@ -10,19 +10,25 @@ class DiningReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "USERNAME")
     private String username;
+    @Column(name = "RESTAURANT")
     private Long restaurant; // represented by the restaurant id
-    private Integer peanut_score;
-    private Integer egg_score;
-    private Integer dairy_score;
+    @Column(name = "PEANUTSCORE")
+    private Integer peanutScore;
+    @Column(name = "EGGSCORE")
+    private Integer eggScore;
+    @Column(name = "DAIRYSCORE")
+    private Integer dairyScore;
+    @Column(name = "COMMENTARY")
     private String commentary;
 
-    public DiningReview(String display_name, Long restaurant, Integer peanut_score, Integer egg_score, Integer dairy_score, String commentary) {
+    public DiningReview(String display_name, Long restaurant, Integer peanutScore, Integer eggScore, Integer dairyScore, String commentary) {
         this.username = display_name;
         this.restaurant = restaurant;
-        this.peanut_score = peanut_score;
-        this.egg_score = egg_score;
-        this.dairy_score = dairy_score;
+        this.peanutScore = peanutScore;
+        this.eggScore = eggScore;
+        this.dairyScore = dairyScore;
         this.commentary = commentary;
     }
 }

@@ -18,21 +18,21 @@ class Restaurant {
     // category score is the average of all submitted scores for category
     @Column(name = "NAME")
     private String name;
-    @Column(name = "PEANUT_SCORE")
-    private Integer peanut_score;
-    @Column(name = "EGG_SCORE")
-    private Integer egg_score;
-    @Column(name = "DAIRY_SCORE")
-    private Integer dairy_score;
+    @Column(name = "PEANUTRATING")
+    private Integer peanutRating;
+    @Column(name = "EGGRATING")
+    private Integer eggRating;
+    @Column(name = "DAIRYRATING")
+    private Integer dairyRating;
     // overall score is the average of all submitted scores for all categories
-    @Column(name = "OVERALL_SCORE")
-    private Double overall_score;
+    @Column(name = "OVERALLRATING")
+    private Double overallRating;
 
     public Restaurant(String name) {
         this.name = name;
-        this.peanut_score = 0;
-        this.egg_score = 0;
-        this.dairy_score = 0;
-        this.overall_score = 0.0;
+        this.peanutRating = 0;
+        this.eggRating = 0;
+        this.dairyRating = 0;
+        this.overallRating = 0.0;
     }
 }

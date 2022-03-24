@@ -20,7 +20,7 @@ public class RestaurantController {
         return restaurantRepository.findAll();
     }
 
-    @GetMapping(path="/id/{id}")
+    @GetMapping(path="/{id}")
     public Optional<Restaurant> getRestaurantById(@PathVariable("id") Long id) {
         Optional<Restaurant> result = this.restaurantRepository.findById(id);
         if (result.isEmpty()) {
@@ -29,14 +29,14 @@ public class RestaurantController {
         } else return result;
     }
 
-    @GetMapping(path="/name/{name}")
-    public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
-        Optional<Restaurant> result = restaurantRepository.findByName(name);
-        if (result.toString().isEmpty()) {
-            System.out.println("Restaurant name does not exist");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        } else return result;
-    }
+//    @GetMapping(path="/name/{name}")
+//    public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
+//       Optional<Restaurant> result = restaurantRepository.findByName(name);
+//       if (result.toString().isEmpty()) {
+//            System.out.println("Restaurant name does not exist");
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+//        } else return result;
+//    }
 
 
 }

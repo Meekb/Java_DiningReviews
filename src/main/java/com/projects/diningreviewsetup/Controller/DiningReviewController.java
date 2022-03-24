@@ -4,8 +4,7 @@ import com.projects.diningreviewsetup.model.DiningReview;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,6 +28,16 @@ public class DiningReviewController {
             System.out.println("That id does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } else return result;
+    }
+
+    @GetMapping("/score/{peanutScore}")
+    public List<DiningReview> getReviewByPeanutScore(@PathVariable("peanutScore") Integer peanutScore) {
+        List<DiningReview> matchingScores = diningReviewRepository.findByPeanutScore(peanutScore);
+        if (matchingScores.toString().isEmpty()) {
+            return null;
+        } else {
+            return matchingScores;
+        }
     }
 
 }
