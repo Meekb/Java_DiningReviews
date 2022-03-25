@@ -30,30 +30,30 @@ public class DiningReviewController {
         } else return result;
     }
 
-    @GetMapping("/allergy/peanut-score-{peanutScore}")
+    @GetMapping("/allergy/peanut_score_{peanutScore}")
     public List<DiningReview> getReviewByPeanutScore(@PathVariable("peanutScore") Integer peanutScore) {
         List<DiningReview> result = diningReviewRepository.findByPeanutScore(peanutScore);
         if (result.isEmpty()) {
             System.out.println("Sorry, no reviews with that peanut score were found.");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return null;
         } else return result;
     }
 
-    @GetMapping("/allergy/egg-score-{eggScore}")
+    @GetMapping("/allergy/egg_score_{eggScore}")
     public List<DiningReview> getReviewByEggScore(@PathVariable("eggScore") Integer eggScore) {
         List<DiningReview> result = diningReviewRepository.findByEggScore(eggScore);
         if (result.isEmpty()) {
             System.out.println("Sorry, no reviews with that egg score were found.");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return null;
         } else return result;
     }
 
-    @GetMapping("/allergy/dairy-score-{dairyScore}")
+    @GetMapping("/allergy/dairy_score_{dairyScore}")
     public List<DiningReview> getReviewsByDairyScore(@PathVariable("dairyScore") Integer dairyScore) {
         List<DiningReview> result = diningReviewRepository.findByDairyScore(dairyScore);
         if (result.isEmpty()) {
             System.out.println("Sorry, no reviews with that dairy score were found.");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            return null;
         } else return result;
     }
 
