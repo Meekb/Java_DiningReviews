@@ -4,6 +4,8 @@ import com.projects.diningreviewsetup.model.DiningReview;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,29 +34,23 @@ public class DiningReviewController {
 
     @GetMapping("/allergy/peanut_score_{peanutScore}")
     public List<DiningReview> getReviewByPeanutScore(@PathVariable("peanutScore") Integer peanutScore) {
-        List<DiningReview> result = diningReviewRepository.findByPeanutScore(peanutScore);
-        if (result.isEmpty()) {
-            System.out.println("Sorry, no reviews with that peanut score were found.");
-            return null;
-        } else return result;
+        if (peanutScore != null) {
+            return diningReviewRepository.findByPeanutScore(peanutScore);
+        } else return new ArrayList<>();
     }
 
     @GetMapping("/allergy/egg_score_{eggScore}")
     public List<DiningReview> getReviewByEggScore(@PathVariable("eggScore") Integer eggScore) {
-        List<DiningReview> result = diningReviewRepository.findByEggScore(eggScore);
-        if (result.isEmpty()) {
-            System.out.println("Sorry, no reviews with that egg score were found.");
-            return null;
-        } else return result;
+        if (eggScore != null) {
+            return diningReviewRepository.findByEggScore(eggScore);
+        } else return new ArrayList<>();
     }
 
     @GetMapping("/allergy/dairy_score_{dairyScore}")
     public List<DiningReview> getReviewsByDairyScore(@PathVariable("dairyScore") Integer dairyScore) {
-        List<DiningReview> result = diningReviewRepository.findByDairyScore(dairyScore);
-        if (result.isEmpty()) {
-            System.out.println("Sorry, no reviews with that dairy score were found.");
-            return null;
-        } else return result;
+        if (dairyScore != null) {
+            return diningReviewRepository.findByDairyScore(dairyScore)
+        } else return new ArrayList<>();
     }
 
 }
