@@ -30,6 +30,14 @@ public class RestaurantController {
         } else return Optional.empty();
     }
 
+    // returns Optional
+    @GetMapping("/byname/{name}")
+    public List<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
+        if (name != null) {
+            return restaurantRepository.findByNameContaining(name);
+        } else return new ArrayList<>();
+    }
+
     // returns List of restaurants with overall rating greater than or equal to requested
     @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
     public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {

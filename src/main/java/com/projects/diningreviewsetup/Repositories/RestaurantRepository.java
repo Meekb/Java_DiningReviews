@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
+    List<Restaurant> findByNameContaining(String name);
     List<Restaurant> findByOverallRatingGreaterThanEqual(Double overallRating);
     List<Restaurant> findByPeanutRatingGreaterThanEqual(Integer peanutRating);
     List<Restaurant> findByEggRatingGreaterThanEqual(Integer eggRating);
