@@ -19,14 +19,14 @@ public class RestaurantController {
     // return Iterable with all restaurants
     @GetMapping()
     public Iterable<Restaurant> getAllRestaurants() {
-        return restaurantRepository.findAll();
+        return this.restaurantRepository.findAll();
     }
 
     // returns Optional restaurant with requested id
     @GetMapping("/{id}")
     public Optional<Restaurant> getRestaurantById(@PathVariable("id") Long id) {
         if (id != null) {
-            return restaurantRepository.findById(id);
+            return this.restaurantRepository.findById(id);
         } else return Optional.empty();
     }
 
@@ -34,7 +34,7 @@ public class RestaurantController {
     @GetMapping("/byname/{name}")
     public List<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
         if (name != null) {
-            return restaurantRepository.findByNameContaining(name);
+            return this.restaurantRepository.findByNameContaining(name);
         } else return new ArrayList<>();
     }
 
@@ -42,7 +42,7 @@ public class RestaurantController {
     @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
     public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
         if (overallRating != null) {
-            return restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
+            return this.restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
         } else return new ArrayList<>();
     }
 
@@ -50,7 +50,7 @@ public class RestaurantController {
     @GetMapping("/rating/peanut_greaterthanequal_{peanutRating}")
     public List<Restaurant> getByPeanutRatingGreaterThanEqual(@PathVariable("peanutRating") Integer peanutRating) {
         if (peanutRating != null) {
-            return restaurantRepository.findByPeanutRatingGreaterThanEqual(peanutRating);
+            return this.restaurantRepository.findByPeanutRatingGreaterThanEqual(peanutRating);
         } else return new ArrayList<>();
     }
 
@@ -58,7 +58,7 @@ public class RestaurantController {
     @GetMapping("/rating/egg_greaterthanequal_{eggRating}")
     public List<Restaurant> getByEggRatingGreaterThanEqual(@PathVariable("eggRating") Integer eggRating) {
         if (eggRating != null) {
-            return restaurantRepository.findByEggRatingGreaterThanEqual(eggRating);
+            return this.restaurantRepository.findByEggRatingGreaterThanEqual(eggRating);
         } else return new ArrayList<>();
     }
 
@@ -66,7 +66,7 @@ public class RestaurantController {
     @GetMapping("/rating/dairy_greaterthanequal_{dairyRating}")
     public List<Restaurant> getByDairyRatingGreaterThanEqual(@PathVariable("dairyRating") Integer dairyRating) {
         if (dairyRating != null) {
-            return restaurantRepository.findByDairyRatingGreaterThanEqual(dairyRating);
+            return this.restaurantRepository.findByDairyRatingGreaterThanEqual(dairyRating);
         } else return new ArrayList<>();
     }
 

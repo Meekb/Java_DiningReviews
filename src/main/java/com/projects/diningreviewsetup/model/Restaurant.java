@@ -1,9 +1,7 @@
 package com.projects.diningreviewsetup.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.Optional;
 
 @Entity
 @Table(name = "RESTAURANTS")
