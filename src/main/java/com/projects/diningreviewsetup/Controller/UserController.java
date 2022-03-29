@@ -19,6 +19,7 @@ public class UserController {
         return this.userRepository.findAll();
     }
 
+    // creates / saves a new user
     @PostMapping("/addNew")
     public User createUser(@RequestBody User user) {
         User newUser = this.userRepository.save(user);
