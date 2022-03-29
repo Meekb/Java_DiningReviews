@@ -48,6 +48,7 @@ Each class has an id which is an auto-generated Long data type
 
   **Code examples**
   ```java
+   // RESTAURANT
    // returns List of restaurants with overall rating greater than or equal to requested
    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
    public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
@@ -56,6 +57,7 @@ Each class has an id which is an auto-generated Long data type
        } else return new ArrayList<>();
      }
     
+   // DINING REVIEW
    // returns review list with requested min dairy score
    @GetMapping("/dairy/score_greaterthanequal_{dairyScore}")
    public List<DiningReview> getReviewsByDairyScoreGreaterThanEqual(@PathVariable("dairyScore") Integer dairyScore) {
@@ -64,6 +66,7 @@ Each class has an id which is an auto-generated Long data type
        } else return new ArrayList<>();
      }
    
+   // USER
    // creates & saves a new user
     @PostMapping("/addNew")
     public User createUser(@RequestBody User user) {
