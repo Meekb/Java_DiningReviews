@@ -19,6 +19,12 @@ public class UserController {
         return this.userRepository.findAll();
     }
 
+    @PostMapping("/addNew")
+    public User createUser(@RequestBody User user) {
+        User newUser = this.userRepository.save(user);
+        return newUser;
+    }
+
     // returns user by id
     @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable("id") Long id) {
@@ -51,12 +57,6 @@ public class UserController {
     @GetMapping("/dairy_interest")
     public Iterable <User> findByDairyInterestTrue() {
         return this.userRepository.getByDairyInterestTrue();
-    }
-
-    @PostMapping("/users")
-    public User createNewUser(@RequestBody User user) {
-        User newUser = this.userRepository.save(user);
-        return newUser;
     }
 
 }
