@@ -1,10 +1,10 @@
-# Java_DiningReviews
+# Dining Reviews in Java  
+An allergy-specific restaurant review API
 
 ## Overview
 RESTful Dining Review API with data persistence built in Java using Spring and Spring Data JPA with Hibernate.  
-Dining Review API designed for folks with allergies. Users indicated interest in any or all of three categories - peanut, egg, dairy.
-Restaurants are rated in each category, and have an overall rating. Reviews contain username and optional scores for peanut, egg, dairy, and an 
-optional commentary.
+This sample Dining Review API is designed for folks with allergies. Users indicate interest in any or all of three categories - peanut, egg, dairy.
+Restaurants are rated in each category and have an overall rating which is the average of all review scores. Reviews contain username and optional scores for peanut, egg, dairy, as well as an optional commentary.
 
 ### Instructions
 You will need an Integrated Develepor Environment (IDE) such as IntelliJ IDE, or VS Code and a Java Development Kit (JDK) version 8 or higher.
@@ -17,8 +17,9 @@ npm install
 Open project in IDE, run local server to curl endpoints
 
 ### Model:
+The Model consists of three classes - User, Restaurant, and DiningReview
+Each class has an id which is an auto-generated Long data type
 User
-  * auto-generated unique id Long
   * username String
   * city String
   * state String
@@ -28,7 +29,6 @@ User
   * dairyInterest Boolean
 
 Restaurant
-  * auto-generated unique id Long
   * name String
   * peanutRating Integer
   * eggRating Integer
@@ -36,7 +36,6 @@ Restaurant
   * overallRating Integer
 
 Dining Review
-  * auto-generated unique id Long
   * username String
   * restaurant (represented by the restaurant id) Long
   * peanutScore Optional Integer
@@ -46,22 +45,7 @@ Dining Review
 
 ### Controller:
 
-DiningReviewController
-  * @RequestMapping("/reviews") - returns all Dining Reviews
-  * @GetMapping("/{id}") - returns Dining Review by id
-  * @GetMapping("/peanut/score_greaterthanequal_{peanutScore}") - returns Dining Reviews with peanut score >= requested
-  * @GetMapping("/egg/score_greaterthanequal_{eggScore}") - returns Dining Reviews with egg score >= requested
-  * @GetMapping("/dairy/score_greaterthanequal_{dairyScore}") - returns Dining Reviews with dairy score >= requested
-
-RestaurantController
-  * @RequestMapping("/restaurants") - returns all Restaurants
-  * @GetMapping("/{id}") - return Restaurant by id
-  * @GetMapping("/rating/peanut_greaterthanequal_{peanutRating}") - returns Restaurants with peanut rating >= requested
-  * @GetMapping("/rating/egg_greaterthanequal_{eggRating}") - returns Restaurants with egg rating >= requested
-  * @GetMapping("/rating/dairy_greaterthanequal_{dairyRating}") - returns Restaurants with dairy rating >= requested
-  * @GetMapping("/rating/overall_greaterthanequal_{overallRating}") - returns Restaurants with overall rating >= requested
-  
-  **Controller Code examples**
+  **Code examples**
   ```java
    // returns List of restaurants with overall rating greater than or equal to requested
    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
@@ -78,13 +62,42 @@ RestaurantController
            return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
        } else return new ArrayList<>();
      }
-     
+   
+   // creates & saves a new user
+    @PostMapping("/addNew")
+    public User createUser(@RequestBody User user) {
+        User newUser = this.userRepository.save(user);
+        return newUser;
+    }
+   
    // returns users with peanut allergy interest
     @GetMapping("/peanut_interest")
     public Iterable <User> findByPeanutInterestTrue() {
         return this.userRepository.getByPeanutInterestTrue();
     }
   ```
+
+DiningReviewController
+  * @RequestMapping("/reviews") - returns all Dining Reviews
+  * @GetMapping("/{id}") - returns Dining Review by id
+  * @GetMapping("/peanut/score_greaterthanequal_{peanutScore}") - returns Dining Reviews with peanut score >= requested
+  * @GetMapping("/egg/score_greaterthanequal_{eggScore}") - returns Dining Reviews with egg score >= requested
+  * @GetMapping("/dairy/score_greaterthanequal_{dairyScore}") - returns Dining Reviews with dairy score >= requested
+
+RestaurantController
+  * @RequestMapping("/restaurants") - returns all Restaurants
+  * @GetMapping("/{id}") - returns Restaurant by id
+  * @GetMapping("/rating/peanut_greaterthanequal_{peanutRating}") - returns Restaurants with peanut rating >= requested
+  * @GetMapping("/rating/egg_greaterthanequal_{eggRating}") - returns Restaurants with egg rating >= requested
+  * @GetMapping("/rating/dairy_greaterthanequal_{dairyRating}") - returns Restaurants with dairy rating >= requested
+  * @GetMapping("/rating/overall_greaterthanequal_{overallRating}") - returns Restaurants with overall rating >= requested
+ 
+UserController
+  * @GetMapping("/users") - returns all Users
+  * @PostMapping("/users/addNew") - creates and saves new user to the userRepository, returns the new user
+  * @GetMapping("/{id}") - returns user by id
+  * @GetMapping("/username_{username}") - returns user my username
+  * @GetMapping("/peanut_allery", "/egg_allergy", "/dairy_allergy") - returns list of users who flagged interest in specified allergy
   
 ## Tech Stack
 <table>
