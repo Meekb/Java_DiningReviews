@@ -35,7 +35,7 @@ public class UserController {
     }
 
     // returns user by username
-    @GetMapping("/username/{username}")
+    @GetMapping("/username_{username}")
     public User findByUsername(@PathVariable("username") String username) {
         if (username != null) {
             return this.userRepository.getByUsername(username);
@@ -43,19 +43,19 @@ public class UserController {
     }
 
     // returns users with peanut allergy interest
-    @GetMapping("/peanut_interest")
+    @GetMapping("/peanut_allergy")
     public Iterable <User> findByPeanutInterestTrue() {
         return this.userRepository.getByPeanutInterestTrue();
     }
 
     // returns users with egg allergy interest
-    @GetMapping("/egg_interest")
+    @GetMapping("/egg_allergy")
     public Iterable <User> findByEggInterestTrue() {
         return this.userRepository.getByEggInterestTrue();
     }
 
     // returns users with dairy allergy interest
-    @GetMapping("/dairy_interest")
+    @GetMapping("/dairy_allergy")
     public Iterable <User> findByDairyInterestTrue() {
         return this.userRepository.getByDairyInterestTrue();
     }

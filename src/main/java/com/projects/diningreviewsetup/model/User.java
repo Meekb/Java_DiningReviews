@@ -26,17 +26,6 @@ class User {
     private Boolean eggInterest;
     @Column(name = "DAIRYINTEREST")
     private Boolean dairyInterest;
-
-    public User(Long id, String username, String city, String state, Integer zipCode, Boolean peanutInterest, Boolean eggInterest, Boolean dairyInterest) {
-        this.id = id;
-        this.username = username;
-        this.city = city;
-        this.state = state;
-        this.zipCode = zipCode;
-        this.peanutInterest = peanutInterest;
-        this.eggInterest = eggInterest;
-        this.dairyInterest = dairyInterest;
-    }
 }
 
 

@@ -1,6 +1,8 @@
 package com.projects.diningreviewsetup.model;
 import lombok.*;
 import javax.persistence.*;
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @Entity
 @Table(name = "REVIEWS")
@@ -22,13 +24,7 @@ class DiningReview {
     private Integer dairyScore;
     @Column(name = "COMMENTARY")
     private String commentary;
-
-    public DiningReview(String display_name, Long restaurant, Integer peanutScore, Integer eggScore, Integer dairyScore, String commentary) {
-        this.username = display_name;
-        this.restaurant = restaurant;
-        this.peanutScore = peanutScore;
-        this.eggScore = eggScore;
-        this.dairyScore = dairyScore;
-        this.commentary = commentary;
-    }
+    @Column(name = "REVIEW_STATUS")
+    @Enumerated(EnumType.STRING)
+    private AdminReviewStatus adminReviewStatus;
 }

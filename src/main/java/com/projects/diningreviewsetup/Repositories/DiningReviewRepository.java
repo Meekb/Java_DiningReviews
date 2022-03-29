@@ -1,14 +1,16 @@
 package com.projects.diningreviewsetup.Repositories;
+import com.projects.diningreviewsetup.model.AdminReviewStatus;
 import com.projects.diningreviewsetup.model.DiningReview;
 import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
+    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
 
-    List<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
+    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
 
-    List<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
+    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
 
-    List<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
+    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
 
 }
