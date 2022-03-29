@@ -17,8 +17,8 @@ npm install
 Open project in IDE, run local server to curl endpoints
 
 ### Model:
-The Model consists of three classes - User, Restaurant, and DiningReview. 
-Each class has an id which is an auto-generated Long data type
+The Model consists of four classes - User, Restaurant, DiningReview, and AdminReviewStatus. 
+User, Restaurant, and DingingReview classes have use auto-generated id, date type Long
 
 **User**
   * username String
@@ -44,11 +44,30 @@ Each class has an id which is an auto-generated Long data type
   * dairyScore Optional Integer
   * commentary Optional String
 
+**AdminReviewStatus**
+```java
+public enum AdminReviewStatus {
+    PENDING,
+    APPROVED,
+    REJECTED,
+}
+```
+
 ### Controller:
 
   **Code examples**
   ```java
    // RESTAURANT
+   // returns restaurant Optional or ResponseStatusException
+   @GetMapping("/name_{name}")
+    public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
+        Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
+        if (restaurantOptional.isEmpty()) {
+            System.out.print("No Restaurants found by that name.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");
+        } else return restaurantOptional;
+    }
+
    // returns List of restaurants with overall rating greater than or equal to requested
    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
    public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
@@ -56,6 +75,7 @@ Each class has an id which is an auto-generated Long data type
            return restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
        } else return new ArrayList<>();
      }
+     
     
    // DINING REVIEW
    // returns review list with requested min dairy score
@@ -65,6 +85,21 @@ Each class has an id which is an auto-generated Long data type
            return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
        } else return new ArrayList<>();
      }
+     
+   // The following three endpoints return an Iterable of reviews by AdminReviewStatus Pending, Approved, Rejected
+    @GetMapping("/pending")
+    public Iterable<DiningReview> getPendingReviews() {
+        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.PENDING);
+    }
+    @GetMapping("/approved")
+    public Iterable<DiningReview> getApprovedReviews() {
+        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.APPROVED);
+    }
+    @GetMapping("/rejected")
+    public Iterable<DiningReview> getRejectedReviews() {
+        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
+    }
+    
    
    // USER
    // creates & saves a new user
