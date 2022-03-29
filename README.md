@@ -17,9 +17,10 @@ npm install
 Open project in IDE, run local server to curl endpoints
 
 ### Model:
-The Model consists of three classes - User, Restaurant, and DiningReview
+The Model consists of three classes - User, Restaurant, and DiningReview. 
 Each class has an id which is an auto-generated Long data type
-User
+
+**User**
   * username String
   * city String
   * state String
@@ -28,14 +29,14 @@ User
   * eggInterest Boolean
   * dairyInterest Boolean
 
-Restaurant
+**Restaurant**
   * name String
   * peanutRating Integer
   * eggRating Integer
   * dairyRating Integer
   * overallRating Integer
 
-Dining Review
+**Dining Review**
   * username String
   * restaurant (represented by the restaurant id) Long
   * peanutScore Optional Integer
