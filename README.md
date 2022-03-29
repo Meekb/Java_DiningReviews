@@ -78,6 +78,12 @@ RestaurantController
            return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
        } else return new ArrayList<>();
      }
+     
+   // returns users with peanut allergy interest
+    @GetMapping("/peanut_interest")
+    public Iterable <User> findByPeanutInterestTrue() {
+        return this.userRepository.getByPeanutInterestTrue();
+    }
   ```
   
 ## Tech Stack
