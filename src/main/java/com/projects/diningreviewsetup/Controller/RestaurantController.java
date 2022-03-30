@@ -47,7 +47,7 @@ public class RestaurantController {
     public Optional<Restaurant> getRestaurantById(@PathVariable("id") Long id) {
         Optional<Restaurant> restaurantOptional = this.restaurantRepository.findById(id);
         if (restaurantOptional.isEmpty()) {
-            System.out.print("Restaurant id does not exist");
+            System.out.print("\nRestaurant id does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Restaurant id does not exist.");
         } else return restaurantOptional;
     }
@@ -58,7 +58,7 @@ public class RestaurantController {
 //        List<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
           List<Restaurant> restaurantList = restaurantRepository.findByNameContaining(name);
         if (restaurantList.isEmpty()) {
-            System.out.print("No Restaurants found with that name.");
+            System.out.print("\nNo Restaurants found with that name.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");
         } else return restaurantList;
     }
@@ -68,7 +68,7 @@ public class RestaurantController {
     public List<Restaurant> getByOverallGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
         List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
         if (restaurantsToReturn.isEmpty()) {
-            System.out.print("Sorry, no restaurants found with that overall rating.");
+            System.out.print("\nSorry, no restaurants found with that overall rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that overall rating.");
         } else return restaurantsToReturn;
     }
@@ -78,7 +78,7 @@ public class RestaurantController {
     public List<Restaurant> getByPeanutGreaterThanEqual(@PathVariable("peanutRating") Integer peanutRating) {
         List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByPeanutRatingGreaterThanEqual(peanutRating);
         if (restaurantsToReturn.isEmpty()) {
-            System.out.print("Sorry, no restaurants found with that peanut rating.");
+            System.out.print("\nSorry, no restaurants found with that peanut rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that peanut rating.");
         } else return restaurantsToReturn;
     }
@@ -88,7 +88,7 @@ public class RestaurantController {
     public List<Restaurant> getByEggGreaterThanEqual(@PathVariable("eggRating") Integer eggRating) {
         List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByEggRatingGreaterThanEqual(eggRating);
         if (restaurantsToReturn.isEmpty()) {
-            System.out.print("Sorry, no restaurants found with that egg rating.");
+            System.out.print("\nSorry, no restaurants found with that egg rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that egg rating.");
         } else return restaurantsToReturn;
     }
@@ -98,7 +98,7 @@ public class RestaurantController {
     public List<Restaurant> getByDairyGreaterThanEqual(@PathVariable("dairyRating") Integer dairyRating) {
         List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByDairyRatingGreaterThanEqual(dairyRating);
         if (restaurantsToReturn.isEmpty()) {
-            System.out.print("Sorry, no restaurants found with that dairy rating.");
+            System.out.print("\nSorry, no restaurants found with that dairy rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that dairy rating.");
         } else return restaurantsToReturn;
     }
