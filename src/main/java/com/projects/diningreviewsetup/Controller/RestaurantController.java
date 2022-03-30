@@ -50,9 +50,9 @@ public class RestaurantController {
     }
 
     // returns List of restaurants with overall rating greater than or equal to requested
-    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
+    @GetMapping("/overallRating_{overallRating}")
     public List<Restaurant> getByOverallGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
-        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByOverallGreaterThanEqual(overallRating);
+        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
         if (restaurantsToReturn.isEmpty()) {
             System.out.print("Sorry, no restaurants found with that overall rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that overall rating.");
@@ -60,9 +60,9 @@ public class RestaurantController {
     }
 
     // returns List of restaurants with peanut rating greater than or equal to requested
-    @GetMapping("/rating/peanut_greaterthanequal_{peanutRating}")
+    @GetMapping("/peanutRating_{peanutRating}")
     public List<Restaurant> getByPeanutGreaterThanEqual(@PathVariable("peanutRating") Integer peanutRating) {
-        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByPeanutGreaterThanEqual(peanutRating);
+        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByPeanutRatingGreaterThanEqual(peanutRating);
         if (restaurantsToReturn.isEmpty()) {
             System.out.print("Sorry, no restaurants found with that peanut rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that peanut rating.");
@@ -70,9 +70,9 @@ public class RestaurantController {
     }
 
     // returns List of restaurants with egg rating greater than or equal to requested
-    @GetMapping("/rating/egg_greaterthanequal_{eggRating}")
+    @GetMapping("/eggRating_{eggRating}")
     public List<Restaurant> getByEggGreaterThanEqual(@PathVariable("eggRating") Integer eggRating) {
-        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByEggGreaterThanEqual(eggRating);
+        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByEggRatingGreaterThanEqual(eggRating);
         if (restaurantsToReturn.isEmpty()) {
             System.out.print("Sorry, no restaurants found with that egg rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that egg rating.");
@@ -80,9 +80,9 @@ public class RestaurantController {
     }
 
     // returns List of restaurants with dairy rating greater than or equal to requested
-    @GetMapping("/rating/dairy_greaterthanequal_{dairyRating}")
+    @GetMapping("/dairyRating_{dairyRating}")
     public List<Restaurant> getByDairyGreaterThanEqual(@PathVariable("dairyRating") Integer dairyRating) {
-        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByDairyGreaterThanEqual(dairyRating);
+        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByDairyRatingGreaterThanEqual(dairyRating);
         if (restaurantsToReturn.isEmpty()) {
             System.out.print("Sorry, no restaurants found with that dairy rating.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that dairy rating.");
