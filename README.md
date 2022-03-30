@@ -57,6 +57,8 @@ The Model consists of four classes - User, Restaurant, DiningReview, and AdminRe
   }
   ```
 
+------------
+
 ### Controller
 Three controllers: UserController, RestaurantController, DiningReviewController
 
@@ -134,6 +136,8 @@ Three controllers: UserController, RestaurantController, DiningReviewController
     }
    ```
    
+_____________  
+   
 ### Repositories
 Repositories for User, Restaurant, DiningReview
 
@@ -146,8 +150,18 @@ Repositories for User, Restaurant, DiningReview
     Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
   }
   ```
+##### **Code sample from Restaurant Repository**
+  ```java
+  public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
+    List<Restaurant> findAll(Sort name);
+    List<Restaurant> findByNameContaining(String name);
+    List<Restaurant> findByOverallRatingGreaterThanEqual(Double overallRating);
+    List<Restaurant> findByPeanutRatingGreaterThanEqual(Integer peanutRating);
+    List<Restaurant> findByEggRatingGreaterThanEqual(Integer eggRating);
+    List<Restaurant> findByDairyRatingGreaterThanEqual(Integer dairyRating);
+  }
+  ```
 
-  
 ## Tech Stack
 <table>
   <tr>
