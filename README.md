@@ -1,5 +1,5 @@
 # Dining Reviews in Java  
-An allergy-specific restaurant review API
+An allergy-specific restaurant review API built to solidfy the fundamentals of Java and Spring
 
 ## Overview
 RESTful Dining Review API with data persistence built in Java using Spring and Spring Data JPA with Hibernate.  
