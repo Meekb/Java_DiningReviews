@@ -26,11 +26,4 @@ class Restaurant {
     @Column(name = "OVERALLRATING")
     private Double overallRating;
 
-    public Restaurant(String name) {
-        this.name = name;
-        this.peanutRating = 0;
-        this.eggRating = 0;
-        this.dairyRating = 0;
-        this.overallRating = 0.0;
-    }
 }

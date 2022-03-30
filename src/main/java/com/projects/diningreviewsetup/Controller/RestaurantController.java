@@ -23,10 +23,17 @@ public class RestaurantController {
         return this.restaurantRepository.findAll();
     }
 
-//    @PostMapping("/restaurants")
-//    public Restaurant createNewRestaurant(@RequestBody Restaurant restaurant) {
-//        if (restaurantRepository.() )
-//    }
+    @PostMapping("/addNew")
+    public Restaurant createNewRestaurant(@RequestBody Restaurant restaurant) {
+        if (restaurantRepository.findByNameContaining(restaurant.getName()).isEmpty()) {
+            Restaurant newRestaurant = restaurantRepository.save(restaurant);
+            System.out.print("\nNew restaurant created! id: " +  newRestaurant.getId() + ", name: " + newRestaurant.getName());
+            return newRestaurant;
+        } else {
+            System.out.print("\nRestaurant may already exist. How do I match restaurants with multi-word names?");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Restaurant may already exist...");
+        }
+    }
 
     // returns Optional restaurant with requested id
     @GetMapping("/{id}")
@@ -42,7 +49,7 @@ public class RestaurantController {
     @GetMapping("/name_{name}")
     public List<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
 //        List<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
-          List<Restaurant> restaurantList = restaurantRepository.findByName(name);
+          List<Restaurant> restaurantList = restaurantRepository.findByNameContaining(name);
         if (restaurantList.isEmpty()) {
             System.out.print("No Restaurants found with that name.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");

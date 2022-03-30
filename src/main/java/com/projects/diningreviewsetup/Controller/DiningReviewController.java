@@ -4,6 +4,7 @@ import com.projects.diningreviewsetup.Repositories.RestaurantRepository;
 import com.projects.diningreviewsetup.Repositories.UserRepository;
 import com.projects.diningreviewsetup.model.DiningReview;
 import com.projects.diningreviewsetup.model.AdminReviewStatus;
+import com.projects.diningreviewsetup.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class DiningReviewController {
     // returns all dining reviews
     @GetMapping()
     public Iterable<DiningReview> getAllDiningReviews() {
-        return this.diningReviewRepository.findAll();
+        return diningReviewRepository.findAll();
     }
 
     // returns review by id
@@ -37,19 +38,19 @@ public class DiningReviewController {
     // The following three endpoints return an Iterable of reviews by AdminReviewStatus Pending, Approved, Rejected
     @GetMapping("/pending")
     public Iterable<DiningReview> getPendingReviews() {
-        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.PENDING);
+        return diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.PENDING);
     }
     @GetMapping("/approved")
     public Iterable<DiningReview> getApprovedReviews() {
-        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.APPROVED);
+        return diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.APPROVED);
     }
     @GetMapping("/rejected")
     public Iterable<DiningReview> getRejectedReviews() {
-        return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
+        return diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
 
     // returns review list with requested min peanut score
-    @GetMapping("/peanut/score_greaterthanequal_{peanutScore}")
+    @GetMapping("/peanutScore_{peanutScore}")
     public Iterable<DiningReview> getReviewsByPeanutScoreGreaterThanEqual(@PathVariable("peanutScore") Integer peanutScore) {
         if (peanutScore != null) {
             return diningReviewRepository.findByPeanutScoreGreaterThanEqual(peanutScore);
@@ -57,7 +58,7 @@ public class DiningReviewController {
     }
 
     // returns review list with requested min egg score
-    @GetMapping("/egg/score_greaterthanequal_{eggScore}")
+    @GetMapping("/eggScore_{eggScore}")
     public Iterable<DiningReview> getReviewsByEggScoreGreaterThanEqual(@PathVariable("eggScore") Integer eggScore) {
         if (eggScore != null) {
             return diningReviewRepository.findByEggScoreGreaterThanEqual(eggScore);
@@ -65,9 +66,10 @@ public class DiningReviewController {
     }
 
     // returns review list with requested min dairy score
-    @GetMapping("/dairy/score_greaterthanequal_{dairyScore}")
+    @GetMapping("/dairyScore_{dairyScore}")
     public Iterable<DiningReview> getReviewsByDairyScoreGreaterThanEqual(@PathVariable("dairyScore") Integer dairyScore) {
-        if (dairyScore != null) {
+        Iterable<DiningReview> resultList = diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
+        if (resultList != null) {
             return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
         } else return new ArrayList<>();
     }

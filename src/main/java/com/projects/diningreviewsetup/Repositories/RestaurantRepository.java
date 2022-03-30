@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
-    List<Restaurant> findByName(String name);
+    List<Restaurant> findByNameContaining(String name);
     List<Restaurant> findByOverallRatingGreaterThanEqual(Double overallRating);
     List<Restaurant> findByPeanutRatingGreaterThanEqual(Integer peanutRating);
     List<Restaurant> findByEggRatingGreaterThanEqual(Integer eggRating);
