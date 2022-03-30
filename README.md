@@ -18,66 +18,99 @@ Open project in IDE, run local server to curl endpoints
 
 ### Model:
 The Model consists of four classes - User, Restaurant, DiningReview, and AdminReviewStatus. 
-User, Restaurant, and DingingReview classes have use auto-generated id, date type Long
+ - User, Restaurant, and DingingReview classes have an auto-generated id, date type Long
 
-**User**
-  * username String
-  * city String
-  * state String
-  * zipCode Integer
-  * peanutInterest Boolean
-  * eggInterest Boolean
-  * dairyInterest Boolean
-
-**Restaurant**
-  * name String
-  * peanutRating Integer
-  * eggRating Integer
-  * dairyRating Integer
-  * overallRating Integer
-
-**Dining Review**
-  * username String
-  * restaurant (represented by the restaurant id) Long
-  * peanutScore Optional Integer
-  * eggScore Optional Integer
-  * dairyScore Optional Integer
-  * commentary Optional String
+##### **Code samples from DiningReview and AdminReviewStatus Classes**
+  ```java
+  @Entity
+  @Table(name = "REVIEWS")
+  public @Data
+  @NoArgsConstructor
+  class DiningReview {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "USERNAME")
+    private String username;
+    @Column(name = "RESTAURANT")
+    private Long restaurant; // represented by the restaurant id
+    @Column(name = "PEANUTSCORE")
+    private Integer peanutScore;
+    @Column(name = "EGGSCORE")
+    private Integer eggScore;
+    @Column(name = "DAIRYSCORE")
+    private Integer dairyScore;
+    @Column(name = "COMMENTARY")
+    private String commentary;
+    @Column(name = "REVIEW_STATUS")
+    @Enumerated(EnumType.STRING)
+    private AdminReviewStatus adminReviewStatus;
+  }
+  ```
 
 **AdminReviewStatus**
-```java
-public enum AdminReviewStatus {
-    PENDING,
-    APPROVED,
-    REJECTED,
-}
-```
-
-### Controller:
-
-  **Code examples**
   ```java
-   // RESTAURANT
-   // returns restaurant Optional or ResponseStatusException
-   @GetMapping("/name_{name}")
-    public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
-        Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
-        if (restaurantOptional.isEmpty()) {
-            System.out.print("No Restaurants found by that name.");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");
-        } else return restaurantOptional;
+  public enum AdminReviewStatus {
+      PENDING,
+      APPROVED,
+      REJECTED,
+  }
+  ```
+
+### Controller
+Three controllers: UserController, RestaurantController, DiningReviewController
+
+   ##### **Code samples from UserController**
+   ```java
+   // creates & saves a new user
+    @PostMapping("/addNew")
+    public User createUser(@RequestBody User user) {
+        if (userRepository.getByUsername(user.getUsername()) != null || userRepository.findById(user.getId()).isPresent()) {
+            System.out.print("Id or username already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or Id already exists");
+        } else return userRepository.save(user);
     }
 
-   // returns List of restaurants with overall rating greater than or equal to requested
-   @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
-   public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
-       if (overallRating != null) {
-           return restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
-       } else return new ArrayList<>();
+   // returns users with peanut allergy interest
+    @GetMapping("/peanut_allergy")
+    public Iterable <User> findByPeanutInterestTrue() {
+        return this.userRepository.getByPeanutInterestTrue();
+    }
+  ```
+
+   ##### **Code samples from RestaurantController**
+   ```java
+   // returns restaurant Optional or ResponseStatusException
+    @GetMapping("/name_{name}")
+     public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
+         Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
+         if (restaurantOptional.isEmpty()) {
+             System.out.print("No Restaurants found by that name.");
+             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");
+         } else return restaurantOptional;
      }
-     
-    
-   // DINING REVIEW
+
+    // creates and saves a new restaurant
+    @PostMapping("/addNew")
+     public Restaurant createNewRestaurant(@RequestBody Restaurant restaurant) {
+         if (restaurantRepository.findByNameContaining(restaurant.getName()).isEmpty()) {
+             Restaurant newRestaurant = restaurantRepository.save(restaurant);
+             System.out.print("\nNew restaurant created! id: " +  newRestaurant.getId() + ", name: " + newRestaurant.getName());
+             return newRestaurant;
+         } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Restaurant may already exist...");
+     }
+
+    // returns List of restaurants with overall rating greater than or equal to queried rating
+    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
+    public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
+        if (overallRating != null) {
+            return restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
+        } else return new ArrayList<>();
+      }
+   ```
+   
+   ##### **Code samples from DiningReviewController**  
+   ```java 
    // returns review list with requested min dairy score
    @GetMapping("/dairy/score_greaterthanequal_{dairyScore}")
    public List<DiningReview> getReviewsByDairyScoreGreaterThanEqual(@PathVariable("dairyScore") Integer dairyScore) {
@@ -99,44 +132,21 @@ public enum AdminReviewStatus {
     public Iterable<DiningReview> getRejectedReviews() {
         return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
-    
+   ```
    
-   // USER
-   // creates & saves a new user
-    @PostMapping("/addNew")
-    public User createUser(@RequestBody User user) {
-        User newUser = this.userRepository.save(user);
-        return newUser;
-    }
-   
-   // returns users with peanut allergy interest
-    @GetMapping("/peanut_interest")
-    public Iterable <User> findByPeanutInterestTrue() {
-        return this.userRepository.getByPeanutInterestTrue();
-    }
+### Repositories
+Repositories for User, Restaurant, DiningReview
+
+##### **Code sample from DiningReview Repository**
+  ```java
+  public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
+    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
+    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
+    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
+    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
+  }
   ```
 
-DiningReviewController
-  * @RequestMapping("/reviews") - returns all Dining Reviews
-  * @GetMapping("/{id}") - returns Dining Review by id
-  * @GetMapping("/peanut/score_greaterthanequal_{peanutScore}") - returns Dining Reviews with peanut score >= requested
-  * @GetMapping("/egg/score_greaterthanequal_{eggScore}") - returns Dining Reviews with egg score >= requested
-  * @GetMapping("/dairy/score_greaterthanequal_{dairyScore}") - returns Dining Reviews with dairy score >= requested
-
-RestaurantController
-  * @RequestMapping("/restaurants") - returns all Restaurants
-  * @GetMapping("/{id}") - returns Restaurant by id
-  * @GetMapping("/rating/peanut_greaterthanequal_{peanutRating}") - returns Restaurants with peanut rating >= requested
-  * @GetMapping("/rating/egg_greaterthanequal_{eggRating}") - returns Restaurants with egg rating >= requested
-  * @GetMapping("/rating/dairy_greaterthanequal_{dairyRating}") - returns Restaurants with dairy rating >= requested
-  * @GetMapping("/rating/overall_greaterthanequal_{overallRating}") - returns Restaurants with overall rating >= requested
- 
-UserController
-  * @GetMapping("/users") - returns all Users
-  * @PostMapping("/users/addNew") - creates and saves new user to the userRepository, returns the new user
-  * @GetMapping("/{id}") - returns user by id
-  * @GetMapping("/username_{username}") - returns user my username
-  * @GetMapping("/peanut_allery", "/egg_allergy", "/dairy_allergy") - returns list of users who flagged interest in specified allergy
   
 ## Tech Stack
 <table>
