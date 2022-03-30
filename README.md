@@ -59,8 +59,8 @@ The Model consists of four classes - User, Restaurant, DiningReview, and AdminRe
 
 ------------
 
-### Controller
-Three controllers: UserController, RestaurantController, DiningReviewController
+### Controller:
+Three controllers - UserController, RestaurantController, DiningReviewController
 
    ##### **Code samples from UserController**
    ```java
@@ -153,7 +153,7 @@ Three controllers: UserController, RestaurantController, DiningReviewController
    
 _____________  
    
-### Repositories
+### Repositories:
 Repositories for User, Restaurant, DiningReview
 
 ##### **Code sample from DiningReview Repository**
