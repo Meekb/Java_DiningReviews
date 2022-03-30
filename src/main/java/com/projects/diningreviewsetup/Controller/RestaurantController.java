@@ -2,6 +2,7 @@ package com.projects.diningreviewsetup.Controller;
 import com.projects.diningreviewsetup.Repositories.RestaurantRepository;
 import com.projects.diningreviewsetup.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,10 +18,16 @@ public class RestaurantController {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
-    // return Iterable with all restaurants
+    // return Iterable of all restaurants in order of id
     @GetMapping()
     public Iterable<Restaurant> getAllRestaurants() {
-        return this.restaurantRepository.findAll();
+        return restaurantRepository.findAll();
+    }
+
+    // return Iterable with all restaurants sorted by name A-Z
+    @GetMapping("/sorted_names")
+    public Iterable<Restaurant> getAllRestaurantsSorted() {
+        return this.restaurantRepository.findAll(Sort.by("name"));
     }
 
     @PostMapping("/addNew")
