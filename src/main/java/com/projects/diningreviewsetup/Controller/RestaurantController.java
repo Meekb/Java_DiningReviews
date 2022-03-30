@@ -6,8 +6,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +23,7 @@ public class RestaurantController {
     }
 
     // return Iterable with all restaurants sorted by name A-Z
-    @GetMapping("/sorted_names")
+    @GetMapping("/sorted_name")
     public Iterable<Restaurant> getAllRestaurantsSorted() {
         return this.restaurantRepository.findAll(Sort.by("name"));
     }

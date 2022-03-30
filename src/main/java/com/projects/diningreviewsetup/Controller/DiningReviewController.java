@@ -6,6 +6,7 @@ import com.projects.diningreviewsetup.model.DiningReview;
 import com.projects.diningreviewsetup.model.AdminReviewStatus;
 import com.projects.diningreviewsetup.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -21,10 +22,16 @@ public class DiningReviewController {
     @Autowired
     private UserRepository userRepository;
 
-    // returns all dining reviews
+    // returns all reviews in order of id
     @GetMapping()
     public Iterable<DiningReview> getAllDiningReviews() {
         return diningReviewRepository.findAll();
+    }
+    
+    // returns all reviews sorted by username
+    @GetMapping("/sorted_username")
+    public Iterable<DiningReview> getAllDiningReviewsSorted() {
+        return diningReviewRepository.findAll(Sort.by("username"));
     }
 
     // returns review by id
