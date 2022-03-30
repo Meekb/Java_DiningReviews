@@ -25,7 +25,7 @@ public class RestaurantController {
 
 //    @PostMapping("/restaurants")
 //    public Restaurant createNewRestaurant(@RequestBody Restaurant restaurant) {
-//
+//        if (restaurantRepository.() )
 //    }
 
     // returns Optional restaurant with requested id
@@ -43,7 +43,7 @@ public class RestaurantController {
     public Optional<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
         Optional<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
         if (restaurantOptional.isEmpty()) {
-            System.out.print("No Restaurants found by that name.");
+            System.out.print("No Restaurants found with that name.");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No Restaurants found with that name.");
         } else return restaurantOptional;
     }
@@ -53,8 +53,8 @@ public class RestaurantController {
     public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
         List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
         if (restaurantsToReturn.isEmpty()) {
-            System.out.print("Sorry, no restaurants found with that overall rating or better.");
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that overall rating or better.");
+            System.out.print("Sorry, no restaurants found with that overall rating.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that overall rating.");
         } else return restaurantsToReturn;
     }
 

@@ -25,9 +25,9 @@ public class UserController {
     // creates / saves a new user
     @PostMapping("/addNew")
     public User createUser(@RequestBody User user) {
-        if (userRepository.getByUsername(user.getUsername()) != null) {
+        if (userRepository.getByUsername(user.getUsername()) != null || userRepository.findById(user.getId()).isPresent()) {
             System.out.print("Id or username already exists");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id or username already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or Id already exists");
         } else return userRepository.save(user);
     }
 
