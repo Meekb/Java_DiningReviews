@@ -1,7 +1,10 @@
 package com.projects.diningreviewsetup.Controller;
 import com.projects.diningreviewsetup.Repositories.UserRepository;
 import com.projects.diningreviewsetup.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.Optional;
 
 @RestController
@@ -22,8 +25,10 @@ public class UserController {
     // creates / saves a new user
     @PostMapping("/addNew")
     public User createUser(@RequestBody User user) {
-        User newUser = this.userRepository.save(user);
-        return newUser;
+        if (userRepository.getByUsername(user.getUsername()) != null) {
+            System.out.print("Id or username already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id or username already exists");
+        } else return userRepository.save(user);
     }
 
     // returns user by id
