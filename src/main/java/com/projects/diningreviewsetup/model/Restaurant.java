@@ -1,12 +1,12 @@
 package com.projects.diningreviewsetup.model;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "RESTAURANTS")
 public @Data
-@NoArgsConstructor
+@RequiredArgsConstructor
 class Restaurant {
 
     @Id
@@ -25,5 +25,14 @@ class Restaurant {
     // overall score is the average of all submitted scores for all categories
     @Column(name = "OVERALLRATING")
     private Double overallRating;
+
+    public Restaurant(Long id, String name) {
+        this.id = id;
+        this.name = name;
+        this.peanutRating = 0;
+        this.eggRating = 0;
+        this.dairyRating = 0;
+        this.overallRating = 0.0;
+    }
 
 }

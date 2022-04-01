@@ -4,10 +4,12 @@ import com.projects.diningreviewsetup.Repositories.RestaurantRepository;
 import com.projects.diningreviewsetup.Repositories.UserRepository;
 import com.projects.diningreviewsetup.model.DiningReview;
 import com.projects.diningreviewsetup.model.AdminReviewStatus;
-import com.projects.diningreviewsetup.model.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -27,7 +29,7 @@ public class DiningReviewController {
     public Iterable<DiningReview> getAllDiningReviews() {
         return diningReviewRepository.findAll();
     }
-    
+
     // returns all reviews sorted by username
     @GetMapping("/sorted_username")
     public Iterable<DiningReview> getAllDiningReviewsSorted() {
@@ -40,6 +42,21 @@ public class DiningReviewController {
         if (id != null) {
             return diningReviewRepository.findById(id);
         } else return Optional.empty();
+    }
+
+    @PostMapping("/addNew")
+    public DiningReview createNewDiningReview(@RequestBody DiningReview diningReview) {
+        if (restaurantRepository.findById(diningReview.getRestaurant()).isEmpty()) {
+            System.out.print("\nRestaurant does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Restaurant does not exist");
+        }
+        if (userRepository.getByUsername(diningReview.getUsername()) == null) {
+            System.out.print("\nUser does not exist");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not exist");
+        }
+        DiningReview newReview = diningReview;
+        newReview.setAdminReviewStatus(AdminReviewStatus.PENDING);
+        return diningReviewRepository.save(newReview);
     }
 
     // The following three endpoints return an Iterable of reviews by AdminReviewStatus Pending, Approved, Rejected

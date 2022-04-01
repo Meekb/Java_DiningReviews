@@ -1,8 +1,6 @@
 package com.projects.diningreviewsetup.model;
 import lombok.*;
 import javax.persistence.*;
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Entity
 @Table(name = "REVIEWS")
@@ -27,4 +25,5 @@ class DiningReview {
     @Column(name = "REVIEW_STATUS")
     @Enumerated(EnumType.STRING)
     private AdminReviewStatus adminReviewStatus;
+
 }
