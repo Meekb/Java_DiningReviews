@@ -179,15 +179,16 @@ _____________
 ### Repositories:
 Repositories for User, Restaurant, DiningReview
 
-##### **Code sample from DiningReview Repository**
+##### **Code sample from User Repository**
   ```java
-  public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
-    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
-    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
-    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
-    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
+  public interface UserRepository extends CrudRepository<User, Long> {
+    User getByUsername(String username);
+    Iterable <User> getByPeanutInterestTrue();
+    Iterable <User> getByEggInterestTrue();
+    Iterable <User> getByDairyInterestTrue();
   }
   ```
+
 ##### **Code sample from Restaurant Repository**
   ```java
   public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
@@ -197,6 +198,16 @@ Repositories for User, Restaurant, DiningReview
     List<Restaurant> findByPeanutRatingGreaterThanEqual(Integer peanutRating);
     List<Restaurant> findByEggRatingGreaterThanEqual(Integer eggRating);
     List<Restaurant> findByDairyRatingGreaterThanEqual(Integer dairyRating);
+  }
+  ```
+
+##### **Code sample from DiningReview Repository**
+  ```java
+  public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
+    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
+    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
+    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
+    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
   }
   ```
 
