@@ -123,11 +123,19 @@ Three controllers - UserController, RestaurantController, DiningReviewController
             return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
         } else return new ArrayList<>();
     }
-     
-   // returns all reviews in order of id
-    @GetMapping()
-    public Iterable<DiningReview> getAllDiningReviews() {
-        return diningReviewRepository.findAll();
+   
+   // creates and saves and new DiningReview with ResponseStatusExceptions for invalid user and restaurant id
+   @PostMapping("/addNew")
+    public DiningReview createNewDiningReview(@RequestBody DiningReview diningReview) {
+        if (restaurantRepository.findById(diningReview.getRestaurant()).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Restaurant does not exist");
+        }
+        if (userRepository.getByUsername(diningReview.getUsername()) == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User does not exist");
+        }
+        DiningReview newReview = diningReview;
+        newReview.setAdminReviewStatus(AdminReviewStatus.PENDING);
+        return diningReviewRepository.save(newReview);
     }
     
     // returns all reviews sorted by username
