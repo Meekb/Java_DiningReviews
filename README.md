@@ -59,8 +59,8 @@ The Model consists of four classes - User, Restaurant, DiningReview, and AdminRe
 
 ------------
 
-### Controller
-Three controllers: UserController, RestaurantController, DiningReviewController
+### Controller:
+Three controllers - UserController, RestaurantController, DiningReviewController
 
    ##### **Code samples from UserController**
    ```java
@@ -102,24 +102,39 @@ Three controllers: UserController, RestaurantController, DiningReviewController
          } else throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Restaurant may already exist...");
      }
 
-    // returns List of restaurants with overall rating greater than or equal to queried rating
-    @GetMapping("/rating/overall_greaterthanequal_{overallRating}")
-    public List<Restaurant> getByOverallRatingGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
-        if (overallRating != null) {
-            return restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
-        } else return new ArrayList<>();
-      }
+    // returns List of restaurants with overall rating greater than or equal to requested
+    @GetMapping("/overallRating_{overallRating}")
+    public List<Restaurant> getByOverallGreaterThanEqual(@PathVariable("overallRating") Double overallRating) {
+        List<Restaurant> restaurantsToReturn = this.restaurantRepository.findByOverallRatingGreaterThanEqual(overallRating);
+        if (restaurantsToReturn.isEmpty()) {
+            System.out.print("\nSorry, no restaurants found with that overall rating.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sorry, no restaurants found with that overall rating.");
+        } else return restaurantsToReturn;
+    }
    ```
    
    ##### **Code samples from DiningReviewController**  
    ```java 
    // returns review list with requested min dairy score
-   @GetMapping("/dairy/score_greaterthanequal_{dairyScore}")
-   public List<DiningReview> getReviewsByDairyScoreGreaterThanEqual(@PathVariable("dairyScore") Integer dairyScore) {
-       if (dairyScore != null) {
-           return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
-       } else return new ArrayList<>();
-     }
+    @GetMapping("/dairyScore_{dairyScore}")
+    public Iterable<DiningReview> getReviewsByDairyScoreGreaterThanEqual(@PathVariable("dairyScore") Integer dairyScore) {
+        Iterable<DiningReview> resultList = diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
+        if (resultList != null) {
+            return diningReviewRepository.findByDairyScoreGreaterThanEqual(dairyScore);
+        } else return new ArrayList<>();
+    }
+     
+   // returns all reviews in order of id
+    @GetMapping()
+    public Iterable<DiningReview> getAllDiningReviews() {
+        return diningReviewRepository.findAll();
+    }
+    
+    // returns all reviews sorted by username
+    @GetMapping("/sorted_username")
+    public Iterable<DiningReview> getAllDiningReviewsSorted() {
+        return diningReviewRepository.findAll(Sort.by("username"));
+    }  
      
    // The following three endpoints return an Iterable of reviews by AdminReviewStatus Pending, Approved, Rejected
     @GetMapping("/pending")
@@ -138,7 +153,7 @@ Three controllers: UserController, RestaurantController, DiningReviewController
    
 _____________  
    
-### Repositories
+### Repositories:
 Repositories for User, Restaurant, DiningReview
 
 ##### **Code sample from DiningReview Repository**
