@@ -157,6 +157,21 @@ Three controllers - UserController, RestaurantController, DiningReviewController
     public Iterable<DiningReview> getRejectedReviews() {
         return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
+    
+    // approves a pending adminReviewStatus
+    @PutMapping("/admin_approves/{id}")
+    public DiningReview approveReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
+        if (reviewToChangeOptional.isEmpty()) {
+            System.out.print("Review does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
+        } else {
+            DiningReview reviewToChange = reviewToChangeOptional.get();
+            reviewToChange.setAdminReviewStatus(AdminReviewStatus.APPROVED);
+            diningReviewRepository.save(reviewToChange);
+            return reviewToChange;
+        }
+    }
    ```
    
 _____________  
