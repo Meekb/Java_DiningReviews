@@ -9,7 +9,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -44,6 +43,7 @@ public class DiningReviewController {
         } else return Optional.empty();
     }
 
+    // creates and saves new DiningReview with checks for invalid user and restaurant id
     @PostMapping("/addNew")
     public DiningReview createNewDiningReview(@RequestBody DiningReview diningReview) {
         if (restaurantRepository.findById(diningReview.getRestaurant()).isEmpty()) {
@@ -71,6 +71,34 @@ public class DiningReviewController {
     @GetMapping("/rejected")
     public Iterable<DiningReview> getRejectedReviews() {
         return diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
+    }
+
+    @PutMapping("/admin_approves/{id}")
+    public DiningReview approveReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
+        if (reviewToChangeOptional.isEmpty()) {
+            System.out.print("Review does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
+        } else {
+            DiningReview reviewToChange = reviewToChangeOptional.get();
+            reviewToChange.setAdminReviewStatus(AdminReviewStatus.APPROVED);
+            diningReviewRepository.save(reviewToChange);
+            return reviewToChange;
+        }
+    }
+
+    @PutMapping("/admin_rejects/{id}")
+    public DiningReview rejectReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
+        if (reviewToChangeOptional.isEmpty()) {
+            System.out.print("Review does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
+        } else {
+            DiningReview reviewToChange = reviewToChangeOptional.get();
+            reviewToChange.setAdminReviewStatus(AdminReviewStatus.REJECTED);
+            diningReviewRepository.save(reviewToChange);
+            return reviewToChange;
+        }
     }
 
     // returns review list with requested min peanut score
