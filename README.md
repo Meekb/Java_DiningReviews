@@ -177,6 +177,19 @@ Three controllers - UserController, RestaurantController, DiningReviewController
             return reviewToChange;
         }
     }
+    
+    // deletes a rejected review
+    @DeleteMapping("/delete_rejected/{id}")
+    public DiningReview deleteRejectedDiningReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToDeleteOptional = diningReviewRepository.findById(id);
+        if (!reviewToDeleteOptional.isPresent()) {
+            return null;
+        }
+        DiningReview reviewToDelete = reviewToDeleteOptional.get();
+        diningReviewRepository.delete(reviewToDelete);
+        System.out.print("\nid: " + id + " has been successfully deleted");
+        return reviewToDelete;
+    }
    ```
    
 _____________  
