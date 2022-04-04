@@ -163,8 +163,8 @@ Three controllers - UserController, RestaurantController, DiningReviewController
         return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
     
-    // approves a pending adminReviewStatus
-    @PutMapping("/admin_approves/{id}")
+    // approves a pending review
+    @PutMapping("/admin_approve/{id}")
     public DiningReview approveReview(@PathVariable("id") Long id) {
         Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
         if (reviewToChangeOptional.isEmpty()) {
