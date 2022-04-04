@@ -64,13 +64,18 @@ Three controllers - UserController, RestaurantController, DiningReviewController
 
    ##### **Code samples from UserController**
    ```java
-   // creates & saves a new user
+   // creates / saves a new user
     @PostMapping("/addNew")
     public User createUser(@RequestBody User user) {
-        if (userRepository.getByUsername(user.getUsername()) != null || userRepository.findById(user.getId()).isPresent()) {
-            System.out.print("Id or username already exists");
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or Id already exists");
-        } else return userRepository.save(user);
+        if (userRepository.getByUsername(user.getUsername()) != null && userRepository.findById(user.getId()).isPresent()) {
+            System.out.print("\nUser already exists");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");
+        }
+        if (userRepository.getByUsername(user.getUsername()) != null) {
+            System.out.print("\nUsername not available");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username not available");
+        }
+        return userRepository.save(user);
     }
 
    // returns users with peanut allergy interest
@@ -157,6 +162,21 @@ Three controllers - UserController, RestaurantController, DiningReviewController
     public Iterable<DiningReview> getRejectedReviews() {
         return this.diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
+    
+    // approves a pending review
+    @PutMapping("/admin_approve/{id}")
+    public DiningReview approveReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
+        if (reviewToChangeOptional.isEmpty()) {
+            System.out.print("Review does not exist");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
+        } else {
+            DiningReview reviewToChange = reviewToChangeOptional.get();
+            reviewToChange.setAdminReviewStatus(AdminReviewStatus.APPROVED);
+            diningReviewRepository.save(reviewToChange);
+            return reviewToChange;
+        }
+    }
    ```
    
 _____________  
@@ -164,15 +184,16 @@ _____________
 ### Repositories:
 Repositories for User, Restaurant, DiningReview
 
-##### **Code sample from DiningReview Repository**
+##### **Code sample from User Repository**
   ```java
-  public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
-    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
-    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
-    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
-    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
+  public interface UserRepository extends CrudRepository<User, Long> {
+    User getByUsername(String username);
+    Iterable <User> getByPeanutInterestTrue();
+    Iterable <User> getByEggInterestTrue();
+    Iterable <User> getByDairyInterestTrue();
   }
   ```
+
 ##### **Code sample from Restaurant Repository**
   ```java
   public interface RestaurantRepository extends CrudRepository<Restaurant, Long> {
@@ -182,6 +203,16 @@ Repositories for User, Restaurant, DiningReview
     List<Restaurant> findByPeanutRatingGreaterThanEqual(Integer peanutRating);
     List<Restaurant> findByEggRatingGreaterThanEqual(Integer eggRating);
     List<Restaurant> findByDairyRatingGreaterThanEqual(Integer dairyRating);
+  }
+  ```
+
+##### **Code sample from DiningReview Repository**
+  ```java
+  public interface DiningReviewRepository extends CrudRepository<DiningReview, Long> {
+    Iterable<DiningReview> findByAdminReviewStatus(AdminReviewStatus adminReviewStatus);
+    Iterable<DiningReview> findByPeanutScoreGreaterThanEqual(Integer peanutScore);
+    Iterable<DiningReview> findByEggScoreGreaterThanEqual(Integer eggScore);
+    Iterable<DiningReview> findByDairyScoreGreaterThanEqual(Integer dairyScore);
   }
   ```
 
