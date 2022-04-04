@@ -53,7 +53,6 @@ public class RestaurantController {
     // returns name containing...more work needed on this one - restaurants with multi-word names
     @GetMapping("/name_{name}")
     public List<Restaurant> getRestaurantByName(@PathVariable("name") String name) {
-//        List<Restaurant> restaurantOptional = this.restaurantRepository.findByNameContaining(name);
           List<Restaurant> restaurantList = restaurantRepository.findByNameContaining(name);
         if (restaurantList.isEmpty()) {
             System.out.print("\nNo Restaurants found with that name.");
