@@ -23,7 +23,7 @@ public class DiningReviewController {
     @Autowired
     private UserRepository userRepository;
 
-    // returns all reviews in order of id
+    // returns all reviews in order of id by default
     @GetMapping()
     public Iterable<DiningReview> getAllDiningReviews() {
         return diningReviewRepository.findAll();
@@ -35,7 +35,7 @@ public class DiningReviewController {
         return diningReviewRepository.findAll(Sort.by("username"));
     }
 
-    // returns review by id
+    // returns review by specified id
     @GetMapping("/{id}")
     public Optional<DiningReview> getReviewById(@PathVariable("id") Long id) {
         if (id != null) {
@@ -43,7 +43,7 @@ public class DiningReviewController {
         } else return Optional.empty();
     }
 
-    // creates and saves new DiningReview with checks for invalid user and restaurant id
+    // creates and saves new DiningReview with checks for invalid user and restaurant ids
     @PostMapping("/addNew")
     public DiningReview createNewDiningReview(@RequestBody DiningReview diningReview) {
         if (restaurantRepository.findById(diningReview.getRestaurant()).isEmpty()) {
@@ -73,11 +73,11 @@ public class DiningReviewController {
         return diningReviewRepository.findByAdminReviewStatus(AdminReviewStatus.REJECTED);
     }
 
-    @PutMapping("/admin_approves/{id}")
+    @PutMapping("/admin_approve/{id}")
     public DiningReview approveReview(@PathVariable("id") Long id) {
         Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
         if (reviewToChangeOptional.isEmpty()) {
-            System.out.print("Review does not exist");
+            System.out.print("\nReview does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
         } else {
             DiningReview reviewToChange = reviewToChangeOptional.get();
@@ -87,11 +87,11 @@ public class DiningReviewController {
         }
     }
 
-    @PutMapping("/admin_rejects/{id}")
+    @PutMapping("/admin_reject/{id}")
     public DiningReview rejectReview(@PathVariable("id") Long id) {
         Optional<DiningReview> reviewToChangeOptional = diningReviewRepository.findById(id);
         if (reviewToChangeOptional.isEmpty()) {
-            System.out.print("Review does not exist");
+            System.out.print("\nReview does not exist");
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Review id does not exist");
         } else {
             DiningReview reviewToChange = reviewToChangeOptional.get();
@@ -99,6 +99,18 @@ public class DiningReviewController {
             diningReviewRepository.save(reviewToChange);
             return reviewToChange;
         }
+    }
+
+    @DeleteMapping("/delete_rejected/{id}")
+    public DiningReview deleteRejectedDiningReview(@PathVariable("id") Long id) {
+        Optional<DiningReview> reviewToDeleteOptional = diningReviewRepository.findById(id);
+        if (!reviewToDeleteOptional.isPresent()) {
+            return null;
+        }
+        DiningReview reviewToDelete = reviewToDeleteOptional.get();
+        diningReviewRepository.delete(reviewToDelete);
+        System.out.print("\nid: " + id + " has been successfully deleted");
+        return reviewToDelete;
     }
 
     // returns review list with requested min peanut score
